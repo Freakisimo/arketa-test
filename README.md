@@ -1,94 +1,93 @@
+# ETL Pipeline Project for Data Cleaning
 
-# Proyecto de Pipeline ETL para Limpieza de Datos
+This project implements an ETL (Extract, Transform, Load) pipeline in Python to consume data from a REST API, apply a series of cleaning and validation rules, and finally save the results in JSON and CSV files.
 
-Este proyecto implementa un pipeline de ETL (Extract, Transform, Load) en Python para consumir datos de una API REST, aplicar una serie de reglas de limpieza y validación, y finalmente guardar los resultados en archivos JSON y CSV.
+## Features
 
-## Características
+- **Data Extraction**: Consumes data from two API endpoints (`/users` and `/todos`).
+- **Transformation and Cleaning**:
+  - Parses and structures input data to a defined schema.
+  - Validates and standardizes phone numbers to E.164 format.
+  - Validates email format.
+  - Performs deduplication of users based on email, phone, or name, keeping the record with the lowest ID.
+- **Cross-Validation**: Validates that tasks (`todos`) belong to valid and existing users.
+- **Data Loading**: Saves the processed data (accepted and rejected) into `.json` and `.csv` files in the `data/` directory.
+- **Testing**: Includes a suite of unit tests to validate the processing logic.
 
-- **Extracción de Datos**: Consume datos de dos endpoints de una API (`/users` y `/todos`).
-- **Transformación y Limpieza**:
-  - Parsea y estructura los datos de entrada a un esquema definido.
-  - Valida y estandariza números de teléfono a un formato E.164.
-  - Valida el formato de emails.
-  - Realiza deduplicación de usuarios basada en email, teléfono o nombre, conservando el registro con el ID más bajo.
-- **Validación Cruzada**: Valida que las tareas (`todos`) pertenezcan a usuarios válidos y existentes.
-- **Carga de Datos**: Guarda los datos procesados (aceptados y rechazados) en archivos `.json` y `.csv` en el directorio `data/`.
-- **Testing**: Incluye una suite de tests unitarios para validar la lógica de procesamiento.
-
-## Estructura del Proyecto
+## Project Structure
 
 ```
 .
-├── data/                 # Directorio de salida para los archivos generados
-├── src/                  # Código fuente del pipeline
+├── data/                 # Output directory for generated files
+├── src/                  # Source code of the pipeline
 │   ├── __init__.py
-│   ├── api_client.py     # Cliente para realizar peticiones a la API
-│   ├── file_writer.py    # Utilidad para escribir archivos JSON y CSV
-│   └── main.py           # Lógica principal del ETL y orquestación
-├── tests/                # Suite de tests unitarios
+│   ├── api_client.py     # Client to make requests to the API
+│   ├── file_writer.py    # Utility to write JSON and CSV files
+│   └── main.py           # Main ETL logic and orchestration
+├── tests/                # Unit test suite
 │   ├── __init__.py
 │   └── test_processors.py
-├── main.py               # Punto de entrada para ejecutar el pipeline
-├── requirements.txt      # Dependencias de Python
-└── README.md             # Este archivo
+├── main.py               # Entry point to run the pipeline
+├── requirements.txt      # Python dependencies
+└── README.md             # This file
 ```
 
-## Configuración e Instalación
+## Setup and Installation
 
-Para ejecutar este proyecto, necesitas tener Python 3 instalado. Se recomienda encarecidamente utilizar un entorno virtual.
+To run this project, you need to have Python 3 installed. It is strongly recommended to use a virtual environment.
 
-1. **Clona el repositorio (si aplica)**:
+1. **Clone the repository (if applicable)**:
    ```bash
-   git clone <url-del-repositorio>
-   cd <nombre-del-directorio>
+   git clone <repository-url>
+   cd <directory-name>
    ```
 
-2. **Crea un entorno virtual**:
+2. **Create a virtual environment**:
    ```bash
    python3 -m venv venv
    ```
 
-3. **Activa el entorno virtual**:
-   - En macOS y Linux:
+3. **Activate the virtual environment**:
+   - On macOS and Linux:
      ```bash
      source venv/bin/activate
      ```
-   - En Windows:
+   - On Windows:
      ```bash
      .\venv\Scripts\activate
      ```
 
-4. **Instala las dependencias**:
+4. **Install the dependencies**:
    ```bash
    pip install -r requirements.txt
    ```
 
-## Cómo Usar
+## How to Use
 
-### Ejecutar el Pipeline ETL
+### Run the ETL Pipeline
 
-Para ejecutar el proceso completo de extracción, transformación y carga, simplemente ejecuta el script `main.py` desde la raíz del proyecto:
+To run the complete process of extraction, transformation, and loading, simply run the `main.py` script from the root of the project:
 
 ```bash
 python3 main.py
 ```
 
-Los archivos de salida se generarán en el directorio `data/`.
+The output files will be generated in the `data/` directory.
 
-### Ejecutar los Tests
+### Run the Tests
 
-Para verificar que toda la lógica de negocio funciona como se espera, puedes ejecutar la suite de tests unitarios:
+To verify that all business logic works as expected, you can run the unit test suite:
 
 ```bash
 python3 -m unittest discover -s tests -t .
 ```
 
-## Resumen del Código
+## Code Summary
 
-- **`src/main.py`**: Es el corazón del proyecto. Contiene:
-  - Las clases `UserProcessor` y `TodoProcessor`, donde reside toda la lógica de transformación, validación y deduplicación.
-  - La función `run_processing_pipeline`, que orquesta la ejecución de los procesadores y sus dependencias.
-  - La función `save_pipeline_results`, que se encarga de la fase de carga (Load) y guarda los archivos.
-- **`src/api_client.py`**: Abstrae la comunicación con la API REST.
-- **`src/file_writer.py`**: Maneja la escritura de los datos procesados en diferentes formatos de archivo.
-- **`tests/test_processors.py`**: Contiene tests unitarios que simulan la API y validan el comportamiento de los procesadores ante diferentes escenarios (datos válidos, duplicados, inválidos, etc.).
+- **`src/main.py`**: This is the heart of the project. It contains:
+  - The `UserProcessor` and `TodoProcessor` classes, where all the transformation, validation, and deduplication logic resides.
+  - The `run_processing_pipeline` function, which orchestrates the execution of the processors and their dependencies.
+  - The `save_pipeline_results` function, which is in charge of the Load phase and saves the files.
+- **`src/api_client.py`**: Abstracts the communication with the REST API.
+- **`src/file_writer.py`**: Handles the writing of processed data in different file formats.
+- **`tests/test_processors.py`**: Contains unit tests that simulate the API and validate the behavior of the processors in different scenarios (valid, duplicate, invalid data, etc.).
